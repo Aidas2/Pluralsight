@@ -1,0 +1,121 @@
+# 2.STARTING
+kubectl
+kubectl version
+kubectl cluster-info
+kubectl get all
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+kubectl describe secret -n kube-system
+kubectl proxy
+
+# if token not showing create demo admin-user (as described in web page).
+kubectl apply -f dashboard-adminuser.yaml
+kubectl apply -f dashboard-adminuser.yaml
+kubectl -n kubernetes-dashboard create token admin-user
+
+# --filename or -f stands for filename
+# -it stands for interactive
+# -l stands for label
+
+https://app.pluralsight.com/library/courses/kubernetes-developers-core-concepts/table-of-contents
+https://github.com/kubernetes/examples
+https://github.com/DanWahlin/DockerAndKubernetesCourseCode
+https://github.com/DanWahlin/CodeWithDanDockerServices
+
+# 3.CREATING_PODS
+kubectl run my-nginx --image=nginx:alpine
+kubectl get pods
+kubectl get services
+kubectl port-forward my-nginx 8080:80
+localhost:8080
+kubectl get pods
+kubectl delete pod my-nginx
+kubectl get pods
+
+kubectl create -f file.pod.yml --dry-run --validate=true
+kubectl apply -f file.pod.yml
+kubectl create -f file.pod.yml --save-config
+kubectl delete -f file.pod.yml
+
+Set Alias -Name k -Value kubectl
+
+kubectl create -f nginx.pod.yml --save-config
+kubectl get pod my-nginx -o yaml
+kubectl describe pod my-nginx
+kubectl apply -f samples/pods/nginx.pod.yaml
+kubectl exec my-nginx -it sh
+kubectl edit -f samples/pods/nginx.pod.yaml
+kubectl delete -f samples/pods/nginx.pod.yaml
+
+# 4.DEPLOYMENTS
+kubectl create -f file.deployment.yml
+kubectl create -f file.deployment.yml --save-config
+kubectl apply -f file.deployment.yml
+kubectl get deployments
+kubectl get deployments --show-labels
+kubectl get deployments -l app=my-nginx
+
+kubectl delete deployment [deployment-name]
+kubectl scale deployment [deployment-name] --replicas=5
+kubectl scale -f file.deployment.yml --replicas=5
+kubectl describe deployment my-nginx
+
+# 5.SERVICES
+kubectl port forward pod/[pod name] 8080:80
+kubectl port forward pod/my-nginx-5975c0f858-8r6kv 8080:80
+kubectl port forward deployment/[deployment name] 8080:80
+kubectl port forward deployment/my-nginx 8080:80
+kubectl port forward service/[service name] 8080
+localhost:8080
+
+kubectl create -f file.service.yml
+kubectl create -f file.service.yml --save-config
+kubectl apply -f file.service.yml
+kubectl get services
+kubectl delete -f file.service.yml
+
+kubectl exec [pod-name] --curl -s http:// podIP
+kubectl exec [pod name] -it sh
+kubectl exec nginx-standalone-77d6656d95-655fz -it sh
+> apk add curl
+> curl -s http:// podIP
+> curl http:10.1.0.147
+> curl http:10.99.22.1129:8080
+> curl http:nginx-clusterip:8080
+kubectl get pod my-nginx-5975c0f858-8r6kv -o yaml
+
+# 6.VOLUMES
+kubectl apply -f nginx-alpine-emptyDir.pod.yml
+kubectl port-forward nginx-alpine-volume 8080:80
+kubectl exec [pod-name] -it sh
+
+# 7.CONFIGMAPS, SECRETS
+kubectl create -f file file.configmap.yml
+kubectl create configmap [cm-name] --from file=[path-to-file]
+kubectl create configmap [cm-name] --from-env-file=[path to file]
+kubectl create configmap [cm-name] --from-literal=apiUrl=https://my-api --from-literal=otherKey=otherValue
+kubectl get cm [cm-name] -o yaml
+
+kubectl create secret generic my-secret --from-literal=pwd=my-password
+kubectl create secret generic db-passwords --from-literal=db-password='password' --from-literal=db-root-password='password'
+kubectl create secret generic my-secret --from-file=ssh-privatekey=~/.ssh/id_rsa --from-file=ssh-publickey=~/.ssh/id_rsa.pub
+kubectl create secret tls tls-secret --cert=path/to/tls.cert --key=path/to/tls.key
+kubectl get secrets
+kubectl get secrets db-passwords -o yaml
+
+# 8.PUTTING_ALL_TOGETHER
+# follow README.md
+kubectl apply -f .k8s
+kubectl get all
+localhost
+
+kubectl logs [pod-name]
+kubectl logs [pod-name] -c [container-name]
+kubectl logs -p [pod-name]
+kubectl logs -f [pod-name]
+kubectl describe pod [pod-name]
+kubectl get pod [pod-name] -o yaml
+kubectl get deployment [deployment-name] -o yaml
+kubectl exec [pod-name] -it sh
+
+kubectl delete -f .k8s
